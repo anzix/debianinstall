@@ -81,7 +81,7 @@ sed -i 's/#SystemMaxUse=/SystemMaxUse=50M/g' /etc/systemd/journald.conf
 # Разрешение на вход по SSH отключено для пользователя root
 sed -ri -e "s/^#PermitRootLogin.*/PermitRootLogin\ no/g" /etc/ssh/sshd_config
 
-# Пароль root пользователя (надеюсь сработает)
+# Пароль root пользователя
 echo "root:${USER_PASSWORD}" | chpasswd
 
 # Добавления юзера с созданием $HOME и присваивание групп к юзеру, оболочка zsh
@@ -89,7 +89,7 @@ echo "root:${USER_PASSWORD}" | chpasswd
 # bluetooth почему-то тоже не существует
 useradd -m -G sudo,adm,dialout,dip,plugdev,netdev,audio,video,input,cdrom,users,uucp,games -s /bin/zsh "${USER_NAME}"
 
-# Пароль пользователя (надеюсь сработает)
+# Пароль пользователя
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
 
 # Не добавлять в $HOME каждый раз при использовании sudo файл .sudo_as_admin_successful
