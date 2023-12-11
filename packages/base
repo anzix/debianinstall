@@ -4,14 +4,13 @@
 
  'build-essential' # Пакеты для сборки
  'linux-image-amd64' 'linux-headers-amd64'
-# linux-lts linux-lts-headers
- 'firmware-misc-nonfree' 'firmware-linux-nonfree'
+ 'firmware-misc-nonfree' 'firmware-linux-nonfree' # Драйвера для работы проприетарного оборудования
  'zsh' 'git'
  'wget' # Для скачивания файлов
  'neovim' # Консольный текстовый редактор
- 'grub-efi-amd64' 'efibootmgr'
+ 'grub-efi-amd64' 'efibootmgr' # Загрузчик
  'intel-microcode'
- 'ttf-terminus' # Шрифты разных размеров с кириллицей для tty
+ # 'xfonts-terminus' # Шрифты разных размеров с кириллицей для tty (уже присутвтвуют, тянет console-setup)
  'network-manager' # Менеджер сети
  'htop' # Простой консольный диспетчер задач
  'xdg-user-dirs' # Создание пользовательских XDG директории
@@ -42,19 +41,22 @@
  'xterm' # Терминал для TTY
  'xserver-xorg' # XOrg сервер
  'xinit' # XOrg инициализация
+ 'x11-utils' # Утилиты X
  'x11-xserver-utils' # Утилиты X
+ 'x11-apps' # Полный набор программ
  'xserver-xorg-video-amdgpu' # Открытые драйвера AMDGPU
  'xclip' # Поддержка буфер обмена
 
 # --- ВИДЕО [OPENGL+VULKAN]
 
- 'mesa' # 'lib32-mesa' # Версия OpenGL с открытым исходным кодом
- 'libgl1-mesa-dri' # 'lib32-mesa-dri' # ХЗ что это
+ # AMD
+
+ 'libgl1-mesa-dri' 'libgl1-mesa-dri:i386' # Версия OpenGL с открытым исходным кодом
  'mesa-vdpau-drivers' # 'lib32-mesa-vdpau-drivers?' # VDPAU Драйвер
  'mesa-va-drivers' # 'lib32-mesa-va-drivers' # VA-API драйвер
 
- 'vulkan-radeon' # 'lib32-vulkan-radeon' # Реализация Vulkan драйвера от Mesa
- 'mesa-vulkan-drivers' # 'lib32-vulkan-mesa-layers' # Слои Vulkan в Mesa
+ 'mesa-vulkan-drivers' 'mesa-vulkan-drivers:i386' # Реализация Vulkan драйвера от Mesa
+ 'vulkan-validationlayers' # 'lib32-vulkan-validationlayers' # Слои Vulkan
 
 # --- АУДИО
 
@@ -64,18 +66,19 @@
  'pipewire-jack' # 'lib32-pipewire-jack'
  'pipewire-v4l2' # Для правильной работы вебки в OBS
  'wireplumber' # Modular session / policy manager for PipeWire
- # 'gst-plugin-pipewire' # Плагины gst для поддержки форматов MP3, AAC, FLAC, MPEG - удалить
+ # 'gst-plugin-pipewire' # (нету) Плагины gst для поддержки форматов MP3, AAC, FLAC, MPEG
 
  # 'noise-suppression-for-voice' # Плагин подавления шума микрофона в реальном времени (Pipewire only) - нету, только компиляция
 
  'gstreamer1.0-pipewire'
  'gstreamer1.0-libav'
- 'gstreamer1.0-plugins-base' # 'lib32-gst-plugins-base'
- 'gstreamer1.0-plugins-good' # 'lib32-gst-plugins-good'
+ 'gstreamer1.0-plugins-base'
+ 'gstreamer1.0-plugins-good'
  'gstreamer1.0-plugins-bad' 'gstreamer1.0-plugins-ugly' # Библеотеки для воспроизведения мультимедия (для запуска старья)
  'gstreamer1.0-vaapi' # Эффективный плагин кодировщик для RDNA1 AMDGPU (для использования нужен AUR пакет obs-gstreamer)
 
 # --- BLUETOOTH
 
  'bluez' # Демон для стека протокола Bluetooth
- 'bluez-utils' # CLI менеджер подключений bluetoothctl
+ 'bluez-firmware' # Проприетарные драйвера Bluetooth
+# 'bluez-utils' # CLI менеджер подключений bluetoothctl - инструмент уже есть

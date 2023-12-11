@@ -8,12 +8,8 @@ tee /etc/hosts > /dev/null << EOF
 127.0.1.1 $HOST_NAME.localdomain $HOST_NAME
 EOF
 
-# Не рекомендовать и не советовать мне пакеты
-# TODO: Может оставить только false для предложенные а рекомендуемые убрать?
-# Иначе при установке окружения система слишком голая (пример: mate-desktop-environment)
-# либо это пакет такой
-tee /etc/apt/apt.conf.d/80norec.conf > /dev/null << EOF
-# APT::Install-Recommends "false";
+# Не предлогать мне пакеты
+tee /etc/apt/apt.conf.d/80nosug.conf > /dev/null << EOF
 APT::Install-Suggests "false";
 EOF
 
@@ -21,14 +17,16 @@ EOF
 # LOCATION=$(curl -s https://ipinfo.io/country)
 # netselect-apt -a amd64 -c "${LOCATION}" -n -o /etc/apt/sources.list "${SUITE}"
 # Добавляю non-free-firmware репозиторий
-# sed -i '/^deb http/ s/$/ non-free-firmware/' /etc/apt/sources.list
+# add-apt-repository non-free-firmware
 
-# Ручное добавлние зеркал
+# Ручное добавление зеркал
+# TODO: Может добавить backports? Linux ядро и другие пакеты будут по свежее,
+# однако свежие драйвера графики Nvidia и AMD (mesa) пока не предвидятся в будущем
 tee /etc/apt/sources.list > /dev/null << EOF
-deb http://ftp.ru.debian.org/debian/ $SUITE main contrib non-free non-free-firmware
-deb http://mirror.docker.ru/debian/ $SUITE main contrib non-free non-free-firmware
-deb http://mirror.truenetwork.ru/debian/ $SUITE main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
+deb [arch=amd64,i386] http://ftp.ru.debian.org/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] http://mirror.docker.ru/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] http://mirror.truenetwork.ru/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
 EOF
 
 # Запускается генератор локалей
@@ -36,7 +34,7 @@ EOF
 # Потом по умолчанию для окружения системы выставил ru_RU.UTF-8
 dpkg-reconfigure locales
 
-# Для сортировки и сравнения строк
+# Приятная сортировка и сравнения строк
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 
 # Запускается настройщик раскладки

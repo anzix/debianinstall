@@ -1,0 +1,72 @@
+# vim: ft=sh
+
+# --- TUI/CLI Утилиты и прочее необходимое
+
+ 'mpd' # Музыкальный демон
+ 'mpc' # CLI Музыкальный клиент для управления mpd
+ 'ncmpcpp' # TUI Музыкальный плеер, обвёртка для mpd
+ 'mediainfo' # CLI Информация о медиа
+ 'alsa-utils' # CLI Утилиты ALSA, в числе которых alsamixer и amixer
+ 'pulsemixer' # TUI Регулятор громкости PulseAudio.
+ 'btop' # TUI Диспетчер задач
+ 'hexedit' # TUI HEX-редактор
+ 'testdisk' # TUI Востановления данных из накопителей
+ 'hdparm' # CLI Проверка состояния S.M.A.R.T'а HDD и SSD
+ 'ncdu' # TUI Анализатор свободного места
+ 'fdupes' # CLI Поиск и удаление дубликатов файлов
+ 'radeontop' # TUI мониторинг AMD GPU
+ 'zbar-tools' # CLI Сканер QR кодов
+ 'translate-shell' # CLI Переводчик в терминале
+ 'xdg-utils' # CLI инструменты для решения различных задач с интеграцией рабочего стола
+ 'needrestart' # Проверка на неоходимость перезагрузки после обновления
+ 'jq' # CLI обработчик JSON
+ 'tree' # Древовидный список
+ 'exa' # Замена ls (для sid: eza)
+ 'bat' # Замена cat (команда: batcat)
+ 'ripgrep' # Замена grep
+ 'fd-find' # Замена find
+ 'inxi' # Системная информация PC
+ 'hwinfo' # Системная информация
+ 'gvfs-backends' # Содержит разлчные движки для передачи, напр. Android MTP
+ 'gvfs' # Поддержка мусорки для файлого менеджера
+ 'libgtk2.0-0' # Для устаревших программ
+ 'yt-dlp' # Скачивать видео
+ 'streamlink' # CLI просмотр потоков Twitch/YouTube и т.д
+ 'btfs' # Файловая система Bittorrent, основанная на FUSE. Для просмотра онлайн торрентов
+ 'ffmpeg' # Конвертер/Декодер/Рекордер видео
+ 'libnotify-bin' # Информирование используя notify-send
+ 'netctl' # Управление сетью systemd на основе профилей
+ 'net-tools' # Для прослушивания портов
+ 'tesseract-ocr' # OCR сканер
+ 'tesseract-ocr-rus' 'tesseract-ocr-eng' 'tesseract-ocr-jpn' # База данных языков
+ 'hunspell-en-us' # Английский словарь для проверки орфоргафии
+ 'hunspell-ru' # Русский словарь для проверки орфографии (работает только с UTF8 кодировкой)
+ 'atool' # Для предпросмотра архивов
+ 'faketime' # CLI утилита чтобы подделывать время для программ или пиратских игр (man faketime)
+ 'flashrom' # Для прошивания чипов программатором ch341a
+ 'dfu-util' # Для обновления прошивки паяльника Pinecil первой версии
+ 'tmux' # Мультиплексор для одноконных терминалов (напр. alacritty)
+ # Нету scrcpy, только в sid
+ 'i2pd' # Невидимый интернет протокол
+ # Нету cdemu, только вручную собирать
+ 'transmission-cli' # Для замены passkey в торрент файлах и многое другое
+ 'default-jdk' # Java библиотеки (для Minecraft)
+
+ 'vainfo' # Проверка VA-API дравера
+ 'vdpauinfo' # Проверка VDPAU драйвера командой (vdpauinfo)
+ 'vulkan-tools' # Инструменты Vulkan такие как vulkaninfo
+
+# 'rhvoice' 'rhvoice-russian' 'rhvoice-english' # Синтезатор речи + голоса (Английский + Русский)
+
+# --- Security
+
+ 'nmap' # Утилита для исследования сети и сканер портов
+
+# --- DEV
+
+# 'npm' # Для neovim (много пакетов)
+# 'yarn' # Для neovim плагина https://github.com/iamcco/markdown-preview.nvim
+# 'tidy' # Инструмент для приведения HTML-кода к чистому стилю
+# 'docker.io' 'docker-compose' # Контейнеры
+# 'podman' 'podman-compose' # Контейнеры, альтернатива docker'у
+# 'distrobox' # Утилита контейнеризации окружения Linux

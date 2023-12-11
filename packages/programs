@@ -1,0 +1,14 @@
+# vim: ft=sh
+
+# --- ПРОГРАММЫ
+
+# 'libreoffice' 'libreoffice-l10n-ru' # Офисный пакет LibreOffice + Руссификация
+ 'obs-studio' 'obs-plugins' # Запись видео и трансляции
+ 'mpv' # Лучший видеопроигрыватель
+# 'qmmp' # Современный аудиоплеер старой школы (т.е Winamp) с поддержкой скинов
+# 'bleachbit' # Чистильщик для Linux
+# 'gimp' # Фоторедактор
+# 'audacity' 'audacity-data' # Продвинутый аудиорекордер
+# 'kdenlive' # Видеоредактор
+# 'piper' # Настройка мышки Logitech
+ 'telegram-desktop' # Мессенджер

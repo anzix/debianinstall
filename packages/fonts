@@ -1,0 +1,16 @@
+# vim: ft=sh
+
+# --- ШРИФТЫ
+
+ # Шрифты семейства Nerd нету в репозиториях Debian, устанавливай вручную
+ # 'fonts-hack'
+ # 'fonts-jetbrains-mono'
+
+ 'ttf-mscorefonts-installer' # Microsoft'овские шрифты
+ 'fonts-font-awesome' # Для появления монотонных значков и иконок
+ 'fonts-open-sans' # Шрифт для Телеграмма
+ 'fonts-liberation' # Начальный набор шрифтов, для совместимости со Steam и Firefox
+ 'fonts-dejavu-core' # Начальный набор шрифтов
+ 'fonts-noto-cjk' # Набор Азиатских шрифтов, много весят
+ 'fonts-noto-color-emoji' # Смайлы в терминал
+ 'fonts-noto-core' # Необходимые Google'овские шрифты, разные иероглифы и т.д
