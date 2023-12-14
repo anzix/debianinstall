@@ -23,7 +23,7 @@ network={
 ip a
 
 # Переходим в оболочку root
-sudo
+sudo su
 
 # Для окончательного подключения вводите заполняя свои данные
 wpa_supplicant -B -i интерфейс -c <(wpa_passphrase МОЙ_SSID парольная_фраза)
@@ -55,7 +55,7 @@ ssh user@ip
 Обновляем зеркала и устанавливаем git
 
 ```sh
-sudo apt update && sudo install -yy git
+sudo apt update && sudo apt -yy install git
 ```
 
 Клонируем репо и переходим в него

@@ -37,18 +37,19 @@ dpkg-reconfigure locales
 # Приятная сортировка и сравнения строк
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 
+# Запускается настройщик tty и консоли
+# Для себя я используя TerminusBold с размеров 11x22
+dpkg-reconfigure console-setup
+
 # Запускается настройщик раскладки
 dpkg-reconfigure keyboard-configuration
-
-# Запускается настройщик tty и консоли
-dpkg-reconfigure console-setup
 
 # Запускается настройка часового пояса
 dpkg-reconfigure tzdata
 
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой
-apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs
+apt update && apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs
 
 # Добавление глобальных переменных системы
 tee -a /etc/environment > /dev/null << EOF
@@ -182,7 +183,6 @@ compression-algorithm = zstd
 EOF
 
 # TODO: добавить мои sysctl настройки
-# TODO: добавить tmpfs в /etc/fstab
 
 # Добавления моих опций ядра grub
 # intel_iommu=on - Включает драйвер intel iommu

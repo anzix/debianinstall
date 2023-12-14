@@ -43,9 +43,6 @@ select ENTRY in "ext4" "btrfs"; do
 	break
 done
 
-# Обнаружение часового пояса
-export time_zone=$(curl -s https://ipinfo.io/timezone)
-
 # Загрузка необходимых инструментов для LiveISO
 apt update && apt install -yy dosfstools gdisk parted debootstrap arch-install-scripts btrfs-progs efivar git
 
