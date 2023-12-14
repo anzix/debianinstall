@@ -10,11 +10,11 @@
  'neovim' # Консольный текстовый редактор
  'grub-efi-amd64' 'efibootmgr' # Загрузчик
  'intel-microcode'
- # 'xfonts-terminus' # Шрифты разных размеров с кириллицей для tty (уже присутвтвуют, тянет console-setup)
  'network-manager' # Менеджер сети
  'htop' # Простой консольный диспетчер задач
  'xdg-user-dirs' # Создание пользовательских XDG директории
  'netselect-apt' # Инструмент для оптимизации зеркал Apt
+ 'aptitude' # CLI Средство управления пакетами
  'ssh' # SSH соединение
  'ca-certificates' # Без этого нибудет работать git и интернет
  'neofetch' # Чтобы выпендриватся
@@ -52,18 +52,18 @@
  # AMD
 
  'libgl1-mesa-dri' 'libgl1-mesa-dri:i386' # Версия OpenGL с открытым исходным кодом
- 'mesa-vdpau-drivers' # 'lib32-mesa-vdpau-drivers?' # VDPAU Драйвер
- 'mesa-va-drivers' # 'lib32-mesa-va-drivers' # VA-API драйвер
+ 'mesa-vdpau-drivers' # 'mesa-vdpau-drivers:i386' # VDPAU Драйвер
+ 'mesa-va-drivers' # 'mesa-va-drivers:i386' # VA-API драйвер
 
  'mesa-vulkan-drivers' 'mesa-vulkan-drivers:i386' # Реализация Vulkan драйвера от Mesa
- 'vulkan-validationlayers' # 'lib32-vulkan-validationlayers' # Слои Vulkan
+ 'vulkan-validationlayers' # 'vulkan-validationlayers:i386' # Слои Vulkan
 
 # --- АУДИО
 
  'pipewire'
  'pipewire-pulse'
  'pipewire-alsa'
- 'pipewire-jack' # 'lib32-pipewire-jack'
+ 'pipewire-jack' # 'pipewire-jack:i386'
  'pipewire-v4l2' # Для правильной работы вебки в OBS
  'wireplumber' # Modular session / policy manager for PipeWire
  # 'gst-plugin-pipewire' # (нету) Плагины gst для поддержки форматов MP3, AAC, FLAC, MPEG

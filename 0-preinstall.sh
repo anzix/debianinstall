@@ -75,12 +75,13 @@ elif [ ${FS} = 'btrfs' ]; then
 	btrfs su cr /mnt/@home
 	btrfs su cr /mnt/@snapshots
 	btrfs su cr /mnt/@home_snapshots
-	btrfs su cr /mnt/@root
-	btrfs su cr /mnt/@tmp
+	btrfs su cr /mnt/@var_tmp
 	btrfs su cr /mnt/@var_log
+	btrfs su cr /mnt/@var_lib_docker
+	btrfs su cr /mnt/@var_lib_containers
 	btrfs su cr /mnt/@var_lib_libvirt_images
 	btrfs su cr /mnt/@var_lib_AccountsService
-	# btrfs su cr /mnt/@var_lib_gdm
+	btrfs su cr /mnt/@var_lib_gdm
 
 	umount -v /mnt
 
@@ -91,13 +92,17 @@ elif [ ${FS} = 'btrfs' ]; then
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home $DISK_MNT /mnt/home
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@snapshots $DISK_MNT /mnt/.snapshots
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home_snapshots $DISK_MNT /mnt/home/.snapshots
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@root $DISK_MNT /mnt/root
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@tmp $DISK_MNT /mnt/tmp
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_tmp $DISK_MNT /mnt/var/tmp
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_log $DISK_MNT /mnt/var/log
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_docker $DISK_MNT /mnt/var/lib/docker
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_containers $DISK_MNT /mnt/var/lib/containers
 	mount --mkdir -v -o noatime,nodatacow,compress=zstd:2,space_cache=v2,subvol=@var_lib_libvirt_images $DISK_MNT /mnt/var/lib/libvirt/images
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvolid=5 $DISK_MNT /mnt/btrfsroot
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
-	# mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm3
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm3
+
+	# Ramdisk
+	mount --mkdir -v -t tmpfs -o rw,nodev,nosuid,noatime,size=4G,mode=1777 $DISK_MNT /mnt/tmp
 
 	# Востановление прав доступа по требованию пакетов
 	chmod -v 775 /mnt/var/lib/AccountsService/
