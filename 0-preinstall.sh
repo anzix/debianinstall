@@ -119,7 +119,6 @@ for i in dev proc sys; do
 done
 
 # Генерирую fstab
-# P - включаяя псевдо файловые системы, tmpfs например
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Добавление дополнительных разделов
