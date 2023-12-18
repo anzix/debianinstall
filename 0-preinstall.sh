@@ -89,18 +89,18 @@ elif [ ${FS} = 'btrfs' ]; then
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home $DISK_MNT /mnt/home
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@snapshots $DISK_MNT /mnt/.snapshots
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home_snapshots $DISK_MNT /mnt/home/.snapshots
-	mount --mkdir=1777 -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_tmp $DISK_MNT /mnt/var/tmp
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_tmp $DISK_MNT /mnt/var/tmp
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_log $DISK_MNT /mnt/var/log
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_docker $DISK_MNT /mnt/var/lib/docker
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_containers $DISK_MNT /mnt/var/lib/containers
 	mount --mkdir -v -o noatime,nodatacow,compress=zstd:2,space_cache=v2,subvol=@var_lib_libvirt_images $DISK_MNT /mnt/var/lib/libvirt/images
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvolid=5 $DISK_MNT /mnt/btrfsroot
-	mount --mkdir=755 -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
-	mount --mkdir=1770 -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm
 
-	# Ramdisk
-	# Также без него не запускается Xorg и все systemd сервисы при загрузке в read-only снимок BTRFS
-	mount --mkdir=1777 -v -t tmpfs -o nodev,nosuid,noatime,size=4G tmpfs /mnt/tmp
+	# Востановление прав доступа по требованию пакетов
+	chmod -v 775 /mnt/var/lib/AccountsService/
+	chmod -v 1770 /mnt/var/lib/gdm3/
 else
 	echo "FS type"
 	exit 1
@@ -119,7 +119,24 @@ for i in dev proc sys; do
 done
 
 # Генерирую fstab
+# P - включаяя псевдо файловые системы, tmpfs например
 genfstab -U /mnt >> /mnt/etc/fstab
+
+# Добавление дополнительных разделов
+tee -a /mnt/etc/fstab >/dev/null << EOF
+# tmpfs
+# Чтобы не изнашивать SSD во время сборки
+# Также без него не запускается Xorg и все systemd сервисы при загрузке в Read-only снимок Grub-Btrfs
+tmpfs                   /tmp            tmpfs           rw,nosuid,nodev,noatime,size=4G,mode=1777,inode64   0 0
+
+# /dev/sdb
+# Мои дополнительные разделы HDD диска
+UUID=F46C28716C2830B2   /media/Distrib  ntfs-3g         rw,nofail,errors=remount-ro,noatime,prealloc,fmask=0022,dmask=0022,uid=1000,gid=984,windows_names   0 0
+UUID=CA8C4EB58C4E9BB7   /media/Other    ntfs-3g         rw,nofail,errors=remount-ro,noatime,prealloc,fmask=0022,dmask=0022,uid=1000,gid=984,windows_names   0 0
+UUID=A81C9E2F1C9DF890   /media/Media    ntfs-3g         rw,nofail,errors=remount-ro,noatime,prealloc,fmask=0022,dmask=0022,uid=1000,gid=984,windows_names   0 0
+UUID=30C4C35EC4C32546   /media/Games    ntfs-3g         rw,nofail,errors=remount-ro,noatime,prealloc,fmask=0022,dmask=0022,uid=1000,gid=984,windows_names   0 0
+EOF
+
 cat /mnt/etc/fstab
 
 # Зачем-то копирует идентичный DNS resolv.conf в /mnt
