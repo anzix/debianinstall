@@ -1,4 +1,4 @@
-# Мой скрипт установки Debian 12 Bookworm (Для личного использования)
+# Мой скрипт установки Debian Linux (Для личного использования)
 
 В качестве LiveISO я использую Standard который схож с Arch ISO, находится он по [ссылке](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/)
 
@@ -7,6 +7,8 @@
 ## [Для ноутбуков] Установка Wi-Fi-соединения и проверка сети (набросок)
 
 - [Arch Wiki](https://wiki.archlinux.org/title/wpa_supplicant#Connecting_with_wpa_passphrase)
+
+Вот что нужно делать как только вы вошли в установщик Debian
 
 ```sh
 # Вводите заполняя свои данные
@@ -81,9 +83,13 @@ sudo su
 
 ## Установка софта из моих файлов
 
-Выполняем установку базовых пакетов с обработкой используя sed
+Перемещаем папку со скриптами в домашнюю директорию
 
 ```sh
+sudo mv /debianinstall ~
+cd ~/debianinstall
+
+# Установка базовых пакетов с обработкой используя sed
 sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ /\n/g' packages/base | column -t)
 ```
 
@@ -100,24 +106,6 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
    - Качаем пакеты `virtualbox-guest-addition-iso xserver-xorg-video-vmware`
    - Присваиваем пользователю группу vboxfs командой `usermod -a -G vboxsf $(whoami)`
    <!-- - Активируем systemd сервис `sudo systemctl enable vboxservice.service` -->
-
-## TODO: Окончательная настройка Snapper
-
-```sh
-# Собираем из исходников grub-btrfs и устанавливаем его
-git clone https://github.com/Antynea/grub-btrfs
-cd grub-btrfs
-sudo make install
-sudo systemctl enable grub-btrfsd
-
-# Устанавливаем простой и удобный CLI инструмент для отката системы внутри снимка
-# Использование: sudo snapper-rollback <номер_снимка>
-git clone https://github.com/jrabinow/snapper-rollback.git
-cd snapper-rollback
-sudo cp -v snapper-rollback.py /usr/local/bin/snapper-rollback
-sudo cp -v snapper-rollback.conf /etc/
-sed -i "s|subvol_main = .*|subvol_main = @rootfs|g" /etc/snapper-rollback.conf
-```
 
 ## Восстановление Debian, chroot из под LiveISO
 
@@ -202,9 +190,43 @@ sudo update-grub
 
 Это позволит модулям nvidia загружатся сразу при загрузке
 
-## Итог по Debian 12 Bookworm с Snapper
+## LightDM не сохраняет выбранного пользователя
 
-У меня получилось завести read-only снимки подобно Arch Linux, без примонтированного /tmp с опцией rw (чтение-запись) у меня почему-то все systemd сервисы тупо не запускались из-за жалобы подобно этой из-за этого я не мог загрузится в окружение.
+- [Источник решения](https://wiki.debian.org/LightDM)
+
+От рута открываем файл ``/etc/lightdm/lightdm.conf``
+
+И раскомментируем строчку
+
+```conf
+[Seat:*]
+...
+greeter-hide-users=false
+```
+
+## LightDM не появляется при входе в Read-only снимок Snapper
+
+Необходимо отредактировать конфиг ``/etc/lightdm/lightdm.conf``, раскомментировать и изменить значение на true
+
+```conf
+[LightDM]
+...
+user-authority-in-system-dir=true
+```
+
+## Итог по Debian 12 Bookworm с BTRFS + Snapper + Snapper-Rollback
+
+У меня получилось завести Read-only снимки подобно Arch Linux, стоит отметить что без примонтированного ``/tmp`` с опцией **rw** (чтение-запись) у меня иксы не запускаются. Из-за этого дисплейный менеджер не может загрузится, что невозможно зайти в само окружение. Такое происходит на Bookworm (stable) и на Sid (unstable)
+
+```txt
+systemd-tmpfiles[573]: rm_rf(/tmp): Read-only file system
+systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.X11-unix": Read-only file system
+systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.ICE-unix": Read-only file system
+systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.XIM-unix": Read-only file system
+systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.font-unix": Read-only file system
+```
+
+Все systemd сервисы тупо не запускались, однако на Sid (unstable) они все запускаются
 
 ```txt
 dbus-broker.service: Failed to set up mount namespacing: /run/systemd/unit-root/dev: Read-only file system

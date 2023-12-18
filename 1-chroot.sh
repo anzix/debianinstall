@@ -37,15 +37,17 @@ dpkg-reconfigure locales
 # Приятная сортировка и сравнения строк
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 
+# Запускается настройка часового пояса
+dpkg-reconfigure tzdata
+
 # Запускается настройщик tty и консоли
 # Для себя я используя TerminusBold с размеров 11x22
 dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
+# Модель Обычная 105, Другая, страна первой раскладки Русская,
+# раскладка Русская, способ переключения Alt+Shift, нет временного переключателя
 dpkg-reconfigure keyboard-configuration
-
-# Запускается настройка часового пояса
-dpkg-reconfigure tzdata
 
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой
@@ -66,7 +68,7 @@ echo "blacklist hid_uclogic" > /etc/modprobe.d/blacklist.conf
 echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
 
 # Установка универсального host файла от StevenBlack (убирает рекламу и вредоносы из WEB'а)
-# Обновление host файла выполняется командой: $ uphosts
+# Обновление host файла выполняется командой: $ uphosts (доступна в dotfiles/base/zsh/funtctions.zsh)
 wget -qO- https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts \
  | grep '^0\.0\.0\.0' \
  | grep -v '^0\.0\.0\.0 [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*$' \
@@ -158,19 +160,32 @@ if [ "${FS}" = 'btrfs' ]; then
   # Обслуживание BTRFS (btrfsmaintenance)
   systemctl enable btrfs-scrub.timer
 
-  # Grub-btrfs??? Нужно ли это сюда??
-  #git clone https://github.com/Antynea/grub-btrfs && cd grub-btrfs
-  #make install
-  #systemctl enable grub-btrfsd
+  # Меню снимков Grub-Btrfs
+  git clone https://github.com/Antynea/grub-btrfs /tmp/grub-btrfs
+  pushd /tmp/grub-btrfs
+  make install
+  systemctl enable grub-btrfsd
+  popd
+
+  # Устанавливаем простой и удобный CLI инструмент для отката системы внутри снимка
+  # Использование: sudo snapper-rollback <номер_снимка>
+  git clone https://github.com/jrabinow/snapper-rollback.git /tmp/snapper-rollback
+  pushd /tmp/snapper-rollback
+  cp -v snapper-rollback.py /usr/local/bin/snapper-rollback
+  cp -v snapper-rollback.conf /etc/
+  sed -i "s|subvol_main = .*|subvol_main = @rootfs|g" /etc/snapper-rollback.conf
+  popd
 
   # Другой APT хук для подробного описания пакетов pre и post снимка
-  # git clone https://github.com/pavinjosdev/snap-apt.git
-  # chmod 755 snap-apt/scripts/snap_apt.py
-  # sudo cp -v snap-apt/scripts/snap_apt.py /usr/bin/snap-apt
-  # sudo cp -v snap-apt/hooks/80snap-apt /etc/apt/apt.conf.d/
-  # sudo cp -v snap-apt/logrotate/snap-apt /etc/logrotate.d/
-  # sudo rm -fv /etc/apt/apt.conf.d/80snapper
-  # sudo sed -i 's/DISABLE_APT_SNAPSHOT=\"no\"/DISABLE_APT_SNAPSHOT=\"yes\"/g' /etc/default/snapper
+  git clone https://github.com/pavinjosdev/snap-apt.git /tmp/snap-apt
+  pushd /tmp/snap-apt
+  chmod -v 755 scripts/snap_apt.py
+  cp -v scripts/snap_apt.py /usr/bin/snap-apt
+  cp -v hooks/80snap-apt /etc/apt/apt.conf.d/
+  cp -v logrotate/snap-apt /etc/logrotate.d/
+  rm -fv /etc/apt/apt.conf.d/80snapper
+  sed -i 's/DISABLE_APT_SNAPSHOT=\"no\"/DISABLE_APT_SNAPSHOT=\"yes\"/g' /etc/default/snapper
+  popd
 fi
 
 # Set plymouth theme
@@ -189,6 +204,10 @@ EOF
 # iommu=pt - Проброс только тех устройств которые поддерживаются
 # zswap.enabled=0 - Отключает приоритетный zswap который заменяется на zram
 sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 mitigations=off intel_iommu=on iommu=pt amdgpu.ppfeaturemask=0xffffffff cpufreq.default_governor=performance zswap.enabled=0"/g' /etc/default/grub
+
+# Рекурсивная правка разрешений в папке скриптов
+chmod -R 700 /debianinstall
+chown -R 1000:users /debianinstall
 
 # Установка и настройка Grub
 #sed -i -e 's/#GRUB_DISABLE_OS_PROBER/GRUB_DISABLE_OS_PROBER/' /etc/default/grub # Обнаруживать другие ОС и добавлять их в grub (нужен пакет os-prober)

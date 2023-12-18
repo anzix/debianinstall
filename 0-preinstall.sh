@@ -89,21 +89,18 @@ elif [ ${FS} = 'btrfs' ]; then
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home $DISK_MNT /mnt/home
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@snapshots $DISK_MNT /mnt/.snapshots
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home_snapshots $DISK_MNT /mnt/home/.snapshots
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_tmp $DISK_MNT /mnt/var/tmp
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,mode=1777,subvol=@var_tmp $DISK_MNT /mnt/var/tmp
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_log $DISK_MNT /mnt/var/log
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_docker $DISK_MNT /mnt/var/lib/docker
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_containers $DISK_MNT /mnt/var/lib/containers
 	mount --mkdir -v -o noatime,nodatacow,compress=zstd:2,space_cache=v2,subvol=@var_lib_libvirt_images $DISK_MNT /mnt/var/lib/libvirt/images
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvolid=5 $DISK_MNT /mnt/btrfsroot
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm3
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,mode=755,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,mode=1770,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm3
 
 	# Ramdisk
-	mount --mkdir -v -t tmpfs -o rw,nodev,nosuid,noatime,size=4G,mode=1777 $DISK_MNT /mnt/tmp
-
-	# Востановление прав доступа по требованию пакетов
-	chmod -v 775 /mnt/var/lib/AccountsService/
-	chmod -v 1770 /mnt/var/lib/gdm3/
+	# Также без него не грузятся все systemd сервисы при загрузке в read-only снимок BTRFS
+	mount --mkdir -v -t tmpfs -o nodev,nosuid,noatime,size=4G,mode=1777 tmpfs /mnt/tmp
 else
 	echo "FS type"
 	exit 1
@@ -116,7 +113,7 @@ mount -v --mkdir $DISK_EFI /mnt/boot/efi
 # Установка базовой системы с некоторыми пакетами
 debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/
 
-# Выполняю bind монтирование для подготовки в chroot
+# Выполняю bind монтирование для подготовки к chroot
 for i in dev proc sys; do
   mount --rbind "/$i" "/mnt/$i"; mount --make-rslave "/mnt/$i"
 done
@@ -129,12 +126,11 @@ cat /mnt/etc/fstab
 # Copy DNS info over
 # cp /etc/resolv.conf /mnt/etc/resolv.conf
 
-# Copy inside-chroot.sh to root of new system so that we can run next commands there
-# inside-chroot.sh should be in the same directory as this script.
-cp "`dirname ${BASH_SOURCE[0]}`/1-chroot.sh" /mnt/1-chroot.sh
+# Копирование папки установочных скриптов
+cp -r /root/debianinstall /mnt
 
-# Chroot'инг
-chroot /mnt /bin/bash /1-chroot.sh
+# Chroot'имся
+chroot /mnt /bin/bash /debianinstall/1-chroot.sh
 
 # Действия после chroot
 if read -re -p "chroot /mnt? [y/N]: " ans && [[ $ans == 'y' || $ans == 'Y' ]]; then
