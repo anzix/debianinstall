@@ -214,6 +214,24 @@ greeter-hide-users=false
 user-authority-in-system-dir=true
 ```
 
+## Flatpak
+
+```sh
+# Включить поддержку Flatpak
+sudo apt install flatpak
+
+# Добавляем репозиторий flahub
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Изменения вступят в силу после выхода из системы или перезагрузки системы.
+
+# Поддержка Flatpak в KDE Plasma
+sudo apt install plasma-discover-backend-flatpak
+
+# Поддержка Flatpak в Gnome Software
+sudo apt install gnome-software-plugin-flatpak
+```
+
 ## Итог по Debian 12 Bookworm с BTRFS + Snapper + Snapper-Rollback
 
 У меня получилось завести Read-only снимки подобно Arch Linux, стоит отметить что без примонтированного ``/tmp`` с опцией **rw** (чтение-запись) у меня иксы не запускаются. Из-за этого дисплейный менеджер не может загрузится, что невозможно зайти в само окружение. Такое происходит на Bookworm (stable) и на Sid (unstable)

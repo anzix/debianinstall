@@ -67,6 +67,7 @@
  'pipewire-v4l2' # Для правильной работы вебки в OBS
  'wireplumber' # Modular session / policy manager for PipeWire
  # 'gst-plugin-pipewire' # (нету) Плагины gst для поддержки форматов MP3, AAC, FLAC, MPEG
+ 'pulseaudio-utils' # Инструменты для проверки аудиодрайвера, например pactl
 
  # 'noise-suppression-for-voice' # Плагин подавления шума микрофона в реальном времени (Pipewire only) - нету, только компиляция
 
