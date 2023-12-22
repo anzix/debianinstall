@@ -29,6 +29,8 @@ deb [arch=amd64,i386] http://mirror.truenetwork.ru/debian/ $SUITE main contrib n
 deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
 EOF
 
+# FIXME: Почему-то находясь в chroot не выполняются команды dpkg-reconfigure
+
 # Запускается генератор локалей
 # Выбрал en_US.UTF-8 UTF-8 и ru_RU.UTF-8 UTF-8
 # Потом по умолчанию для окружения системы выставил ru_RU.UTF-8
@@ -36,6 +38,9 @@ dpkg-reconfigure locales
 
 # Приятная сортировка и сравнения строк
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
+
+# Принудительно использовать Русский язык для исправления кирилицы
+export LANG=ru_RU.UTF-8
 
 # Запускается настройка часового пояса
 dpkg-reconfigure tzdata
