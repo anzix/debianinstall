@@ -65,7 +65,7 @@ sudo apt update && sudo apt -yy install git
 Клонируем репо и переходим в него
 
 ```sh
-git clone https://github.com/anzix/debianinstall && cd debianinstall
+git clone https://github.com/anzix/debianinstall -b debiso && cd debianinstall
 ```
 
 Входим в оболочку root
@@ -122,7 +122,10 @@ for i in dev proc sys; do
 done
 
 # Без экспорта этой переменной я не мог чрутнутся
-export PATH="$PATH:/usr/sbin:/sbin:/bin"
+#export PATH="$PATH:/usr/sbin:/sbin:/bin"
+
+# Необходимо быть в root оболочке
+sudo -s
 
 # Чрутимся
 chroot /mnt
