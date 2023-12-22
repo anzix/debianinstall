@@ -5,14 +5,16 @@
 
 # Минимальный скрипт установки Debian с BTRFS
 
-# Запустить от root
-# Требуется apt, поэтому лучше запускать из Debian/Ubuntu LiveISO
-
 # Русские шрифты
-dpkg-reconfigure locales
+setfont cyr-sun16
+sed -i "s/#\(en_US\.UTF-8\)/\1/; s/#\(ru_RU\.UTF-8\)/\1/" /etc/locale.gen
+locale-gen
 export LANG=ru_RU.UTF-8
 
 clear
+
+# Синхронизация часов материнской платы
+timedatectl set-ntp true
 
 # Выпуск Debian
 export SUITE="stable"
@@ -42,9 +44,6 @@ select ENTRY in "ext4" "btrfs"; do
 	echo "Выбран ${FS}."
 	break
 done
-
-# Загрузка необходимых инструментов для LiveISO
-apt update && apt install -yy dosfstools gdisk parted debootstrap arch-install-scripts btrfs-progs efivar git
 
 # Удаляем старую схему разделов и перечитываем таблицу разделов
 sgdisk --zap-all --clear $DISK # Удаляет (уничтожает) структуры данных GPT и MBR
@@ -114,11 +113,6 @@ mount -v --mkdir $DISK_EFI /mnt/boot/efi
 
 # Установка базовой системы с некоторыми пакетами
 debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/
-
-# Выполняю bind монтирование для подготовки к chroot
-for i in dev proc sys; do
-  mount --rbind "/$i" "/mnt/$i"; mount --make-rslave "/mnt/$i"
-done
 
 # Генерирую fstab
 genfstab -U /mnt >> /mnt/etc/fstab
