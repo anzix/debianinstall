@@ -151,8 +151,8 @@ sudo apt install steam-installer
 
 ```sh
 firmware-iwlwifi # Беспроводные драйвера
-task-laptop
-powertop
+task-laptop # Мета-пакет необходимых программ для ноутбука
+powertop # Мониторинг энергопотребления и управлением питанием
 ```
 
 ## Проприетарные драйвера Nvidia (не проверено)
