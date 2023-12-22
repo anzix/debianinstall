@@ -3,7 +3,7 @@
 # Позаимствовано
 # https://github.com/gtrogdon/linux-install-scripts
 
-# Минимальный скрипт установки Debian с BTRFS
+# Минимальный скрипт установки Debian
 
 # Русские шрифты
 setfont cyr-sun16
@@ -110,6 +110,9 @@ fi
 # Форматирование и монтирование загрузочного раздела
 yes | mkfs.fat -F32 -n BOOT $DISK_EFI
 mount -v --mkdir $DISK_EFI /mnt/boot/efi
+
+# Установка необходимых пакетов
+pacman -Sy debootstrap debian-archive-keyring
 
 # Установка базовой системы с некоторыми пакетами
 debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/

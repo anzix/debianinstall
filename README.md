@@ -29,10 +29,10 @@ ping archlinux.org
 
 ***
 
-Обновляем зеркала и устанавливаем git с необходимыми пакетами
+Обновляем зеркала и устанавливаем git
 
 ```sh
-pacman -Sy git debootstrap debian-archive-keyring
+pacman -Sy git
 ```
 
 Клонируем репо и переходим в него
