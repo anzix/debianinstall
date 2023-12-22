@@ -112,7 +112,7 @@ yes | mkfs.fat -F32 -n BOOT $DISK_EFI
 mount -v --mkdir $DISK_EFI /mnt/boot/efi
 
 # Установка необходимых пакетов
-pacman -Sy debootstrap debian-archive-keyring
+pacman -Sy --noconfirm debootstrap debian-archive-keyring
 
 # Установка базовой системы с некоторыми пакетами
 debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/
@@ -145,7 +145,7 @@ cat /mnt/etc/fstab
 cp -r /root/debianinstall /mnt
 
 # Chroot'имся
-chroot /mnt /bin/bash /debianinstall/1-chroot.sh
+arch-chroot /mnt /bin/bash /debianinstall/1-chroot.sh
 
 # Действия после chroot
 if read -re -p "chroot /mnt? [y/N]: " ans && [[ $ans == 'y' || $ans == 'Y' ]]; then

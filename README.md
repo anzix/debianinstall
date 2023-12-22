@@ -1,6 +1,8 @@
 # Мой скрипт установки Debian Linux (Для личного использования)
 
-> Установить Debian можно из под [образа Arch Linux](https://archlinux.org/download/)
+Установка Debian из под [образа Arch Linux](https://archlinux.org/download/)
+
+> Также присутствует метод установки из под [Debian ISO образа вариации Standard](https://github.com/anzix/debianinstall/tree/debiso)
 
 После загрузки Arch Linux образа ISO необходимо подождать минуту чтобы сервис `pacman-init.service` **успешно** инициализировал связку ключей\
 Если всё же вы столкнулись с ключами при скачивании git просто выполните `systemctl restart pacman-init.service` и снова произойдёт инициализация ключей\

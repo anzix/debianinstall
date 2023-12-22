@@ -30,6 +30,7 @@ deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security
 EOF
 
 # FIXME: Почему-то находясь в chroot не выполняются команды dpkg-reconfigure
+# Если использовать `sudo -s` тогда всё норм
 
 # Запускается генератор локалей
 # Выбрал en_US.UTF-8 UTF-8 и ru_RU.UTF-8 UTF-8
