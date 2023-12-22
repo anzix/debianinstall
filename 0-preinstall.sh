@@ -149,7 +149,7 @@ arch-chroot /mnt /bin/bash /debianinstall/1-chroot.sh
 
 # Действия после chroot
 if read -re -p "chroot /mnt? [y/N]: " ans && [[ $ans == 'y' || $ans == 'Y' ]]; then
-	chroot /mnt ; echo "Не забудьте самостоятельно размонтировать /mnt перед reboot!"
+	arch-chroot /mnt ; echo "Не забудьте самостоятельно размонтировать /mnt перед reboot!"
 else
 	umount -R /mnt
 fi
