@@ -1,76 +1,49 @@
 # Мой скрипт установки Debian Linux (Для личного использования)
 
-В качестве LiveISO я использую Standard который схож с Arch ISO, находится он по [ссылке](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/)
+Используя эту ветку можно установить Debian используя образ Arch Linux
 
-В списке при загрузке в меню выбираем Live ISO (первый вариант)
+После загрузки Arch Linux образа ISO необходимо подождать минуту чтобы сервис `pacman-init.service` **успешно** инициализировал связку ключей\
+Если всё же вы столкнулись с ключами при скачивании git просто выполните `systemctl restart pacman-init.service` и снова произойдёт инициализация ключей\
 
-## [Для ноутбуков] Установка Wi-Fi-соединения и проверка сети (набросок)
+## [Для ноутбуков] Установка Wi-Fi-соединения и проверка сети
 
-- [Arch Wiki](https://wiki.archlinux.org/title/wpa_supplicant#Connecting_with_wpa_passphrase)
-
-Вот что нужно делать как только вы вошли в установщик Debian
+Вот что нужно делать как только вы вошли в установщик Arch Linux
 
 ```sh
-# Вводите заполняя свои данные
-wpa_passphrase МОЙ_SSID парольная_фраза
-
-# Вы увидите нечто похожее у себя
-network={
-    ssid="MYSSID"
-    #psk="passphrase"
-    psk=59e0d07fa4c7741797a4e394f38a5c321e3bed51d54ad5fcbd3f84bc7415d73d
-}
-
-# Необходимо узнать сетевой `интерфейс`
+# Необходимо узнать сетевой интерфейс устройства (device)
 ip a
 
-# Переходим в оболочку root
-sudo su
+# Сканируем на наличие новых сетей
+# Вместо `device` должен быть ваш интерфейс полученный из предыдущей команды
+iwctl station wlan device scan
 
-# Для окончательного подключения вводите заполняя свои данные
-wpa_supplicant -B -i интерфейс -c <(wpa_passphrase МОЙ_SSID парольная_фраза)
+# Выводим список сетей
+iwctl station wlan device get-networks
+
+# Подключаемся к сети заполняя свои данные
+iwctl station wlan device connect SSID --passphrase ""
+
+# Проверяем сеть
+ping archlinux.org
 ```
 
 ***
 
-## Подключение по SSH и установка
-
-Если вы хотите подключится по ssh вот что нужно сделать
+Обновляем зеркала и устанавливаем git с необходимыми пакетами
 
 ```sh
-# Обновляем зеркала и качаем пакет ssh
-sudo apt update && sudo apt -yy install ssh
-
-# Проверяем статус сервиса (должен быть включён автоматически)
-systemctl status sshd
-
-# Запоминаем ip для подключения
-ip a
-
-# С хоста входим по ssh в гостевую машину
-# Пароль пользователя (НЕ root): live
-ssh user@ip
-```
-
-***
-
-Обновляем зеркала и устанавливаем git
-
-```sh
-sudo apt update && sudo apt -yy install git
+pacman -Sy git debootstrap debian-archive-keyring
 ```
 
 Клонируем репо и переходим в него
 
 ```sh
-git clone https://github.com/anzix/debianinstall && cd debianinstall
+git clone https://github.com/anzix/debianinstall -b archiso && cd debianinstall
 ```
 
-Входим в оболочку root
-
-```sh
-sudo su
-```
+> Перед тем как начать установку пробегитесь по выбору пакетов которые я указал в ``packages/base`` открыв любым текстовым редактором vim или nano\
+> Выберете (закомментировав/раскомментировав) используя # (хэш) те пакеты которые вы нуждаетесь\
+> Предоставляется выбор для драйверов между AMD и Nvidia
 
 Начинаем установку
 
@@ -113,7 +86,7 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
 
 ```sh
 # Монтируем
-mount -v -o subvol=@rootfs /dev/vda2 /mnt
+mount -v -o subvol=@ /dev/vda2 /mnt
 mount -v /dev/vda1 /mnt/boot
 for i in dev proc sys; do
   mount -v --rbind "/$i" "/mnt/$i"; mount -v --make-rslave "/mnt/$i"
