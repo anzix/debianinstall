@@ -68,16 +68,15 @@ elif [ ${FS} = 'btrfs' ]; then
 	mkfs.btrfs -L DebianLinux -f $DISK_MNT
 	mount -v $DISK_MNT /mnt
 
-	btrfs su cr /mnt/@rootfs
+	btrfs su cr /mnt/@
 	btrfs su cr /mnt/@home
 	btrfs su cr /mnt/@snapshots
 	btrfs su cr /mnt/@home_snapshots
-	btrfs su cr /mnt/@var_tmp
 	btrfs su cr /mnt/@var_log
 	btrfs su cr /mnt/@var_lib_containers
 	btrfs su cr /mnt/@var_lib_docker
-	btrfs su cr /mnt/@vat_lib_machines
-	btrfs su cr /mnt/@vat_lib_portables
+	btrfs su cr /mnt/@var_lib_machines
+	btrfs su cr /mnt/@var_lib_portables
 	btrfs su cr /mnt/@var_lib_libvirt_images
 	btrfs su cr /mnt/@var_lib_AccountsService
 	btrfs su cr /mnt/@var_lib_gdm
@@ -87,8 +86,7 @@ elif [ ${FS} = 'btrfs' ]; then
 	# BTRFS сам обнаруживает и добавляет опцию "ssd" при монтировании
 	# BTRFS с версией ядра 6.2 по умолчанию включена опция "discard=async"
 	# TODO: Добавить подтом @var_lib_blueman (/var/lib/blueman) для использования bluetooth мышек внутри read-only снимка?
-	# FIXME: Может изменить на subvol=@?
-	mount -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@rootfs $DISK_MNT /mnt
+	mount -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@ $DISK_MNT /mnt
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home $DISK_MNT /mnt/home
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@snapshots $DISK_MNT /mnt/.snapshots
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@home_snapshots $DISK_MNT /mnt/home/.snapshots
@@ -98,9 +96,9 @@ elif [ ${FS} = 'btrfs' ]; then
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_machines $DISK_MNT /mnt/var/lib/machines
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_portables $DISK_MNT /mnt/var/lib/portables
 	mount --mkdir -v -o noatime,nodatacow,compress=zstd:2,space_cache=v2,subvol=@var_lib_libvirt_images $DISK_MNT /mnt/var/lib/libvirt/images
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvolid=5 $DISK_MNT /mnt/btrfsroot
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvolid=5 $DISK_MNT /mnt/.btrfsroot
 	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_AccountsService $DISK_MNT /mnt/var/lib/AccountsService
-	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm
+	mount --mkdir -v -o noatime,compress=zstd:2,space_cache=v2,subvol=@var_lib_gdm $DISK_MNT /mnt/var/lib/gdm3
 
 	# Востановление прав доступа по требованию пакетов
 	chmod -v 775 /mnt/var/lib/AccountsService/

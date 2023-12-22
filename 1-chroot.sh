@@ -41,12 +41,14 @@ echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 dpkg-reconfigure tzdata
 
 # Запускается настройщик tty и консоли
+# UTF-8 - Cyrillic - Slavic languages (also Bosnian and Serbian Latin)
 # Для себя я используя TerminusBold с размеров 11x22
 dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
 # Модель Обычная 105, Другая, страна первой раскладки Русская,
 # раскладка Русская, способ переключения Alt+Shift, нет временного переключателя
+# обычная раскладка клавиатуры, нет ключа compose
 dpkg-reconfigure keyboard-configuration
 
 # Установка необходимых пакетов
@@ -156,7 +158,7 @@ if [ "${FS}" = 'btrfs' ]; then
   sed -i 's/PRUNE_BIND_MOUNTS =.*/PRUNE_BIND_MOUNTS = "no"/' /etc/updatedb.conf
 
   # Предотвращение индексирования снимков программой "updatedb", что замедляло бы работу системы
-  sed -i '/PRUNEPATHS/s/"$/ \/\btrfsroot \/\.snapshots \/home\/\.snapshots"/' /etc/updatedb.conf
+  sed -i '/PRUNEPATHS/s/"$/ \/\.btrfsroot \/\.snapshots \/home\/\.snapshots"/' /etc/updatedb.conf
 
   # Не создавать снимки при загрузке системы
   systemctl disable snapper-boot.timer
@@ -177,7 +179,8 @@ if [ "${FS}" = 'btrfs' ]; then
   pushd /tmp/snapper-rollback
   cp -v snapper-rollback.py /usr/local/bin/snapper-rollback
   cp -v snapper-rollback.conf /etc/
-  sed -i "s|subvol_main = .*|subvol_main = @rootfs|g" /etc/snapper-rollback.conf
+  # Редактирую конфигурационный файл snapper-rollback что точка монтирования /.btrfsroot
+  sed -i "s|^mountpoint.*|mountpoint = /.btrfsroot|" /etc/snapper-rollback.conf
   popd
 
   # Другой APT хук для подробного описания пакетов pre и post снимка
