@@ -1,8 +1,8 @@
 # Мой скрипт установки Debian Linux (Для личного использования)
 
-> Вы можете использовать мою [вариацию скрипта но под образ Arch Linux](https://github.com/anzix/debianinstall/tree/archiso)
+Установка Debian используя образ вариации Standard который схож с Arch Linux образом, находится он по [ссылке](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/)
 
-В качестве LiveISO я использую Standard который схож с Arch ISO, находится он по [ссылке](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/)
+> Вы можете использовать мою [вариацию скрипта но под образ Arch Linux](https://github.com/anzix/debianinstall)
 
 В списке при загрузке в меню выбираем Live ISO (первый вариант)
 
