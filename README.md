@@ -38,7 +38,7 @@ pacman -Sy git
 Клонируем репо и переходим в него
 
 ```sh
-git clone https://github.com/anzix/debianinstall -b archiso && cd debianinstall
+git clone https://github.com/anzix/debianinstall && cd debianinstall
 ```
 
 > Перед тем как начать установку пробегитесь по выбору пакетов которые я указал в ``packages/base`` открыв любым текстовым редактором vim или nano\
