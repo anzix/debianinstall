@@ -1,6 +1,6 @@
 # Мой скрипт установки Debian Linux (Для личного использования)
 
-Используя эту ветку можно установить Debian используя образ Arch Linux
+> Установить Debian можно используя из под [образа Arch Linux](https://archlinux.org/download/)
 
 После загрузки Arch Linux образа ISO необходимо подождать минуту чтобы сервис `pacman-init.service` **успешно** инициализировал связку ключей\
 Если всё же вы столкнулись с ключами при скачивании git просто выполните `systemctl restart pacman-init.service` и снова произойдёт инициализация ключей\
@@ -105,7 +105,7 @@ chroot /mnt
 Выполняем данный скрипт и выбираем шрифт на выбор и готово.
 
 ```sh
-bash -c  "$(curl -fsSL https://raw.githubusercontent.com/officialrajdeepsingh/nerd-fonts-installer/main/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/officialrajdeepsingh/nerd-fonts-installer/main/install.sh)"
 ```
 
 ## TODO: Установка Wine и Steam
