@@ -140,8 +140,6 @@ UUID=A81C9E2F1C9DF890   /media/Media    ntfs-3g         rw,nofail,errors=remount
 UUID=30C4C35EC4C32546   /media/Games    ntfs-3g         rw,nofail,errors=remount-ro,noatime,prealloc,fmask=0022,dmask=0022,uid=1000,gid=984,windows_names   0 0
 EOF
 
-cat /mnt/etc/fstab
-
 # Зачем-то копирует идентичный DNS resolv.conf в /mnt
 # Copy DNS info over
 # cp /etc/resolv.conf /mnt/etc/resolv.conf

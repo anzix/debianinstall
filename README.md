@@ -95,7 +95,7 @@ for i in dev proc sys; do
 done
 
 # Без экспорта этой переменной я не мог чрутнутся
-export PATH="$PATH:/usr/sbin:/sbin:/bin"
+export PATH="$PATH:/usr/sbin:/sbin:/bin:/usr/bin"
 
 # Чрутимся
 chroot /mnt
