@@ -112,10 +112,10 @@ yes | mkfs.fat -F32 -n BOOT $DISK_EFI
 mount -v --mkdir $DISK_EFI /mnt/boot/efi
 
 # Установка необходимых пакетов
-pacman -Sy --noconfirm debootstrap debian-archive-keyring
+pacman -Sy --noconfirm debootstrap debian-archive-keyring libeatmydata
 
 # Установка базовой системы с некоторыми пакетами
-debootstrap --arch amd64 --include locales,console-setup,console-setup-linux,eatmydata $SUITE /mnt http://ftp.ru.debian.org/debian/
+eatmydata debootstrap --arch amd64 --include locales,console-setup,console-setup-linux,eatmydata $SUITE /mnt http://ftp.ru.debian.org/debian/
 
 # Выполняю bind монтирование для подготовки к chroot
 for i in dev proc sys; do
