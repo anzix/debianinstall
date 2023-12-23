@@ -60,7 +60,8 @@ dpkg-reconfigure keyboard-configuration
 
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой
-apt update && apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs
+apt update
+eatmydata apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs
 
 # Добавление глобальных переменных системы
 tee -a /etc/environment > /dev/null << EOF

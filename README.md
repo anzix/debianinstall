@@ -84,7 +84,7 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
 
 ## Восстановление Debian, chroot из под LiveISO
 
-Используя тот же [Standard](https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/) образ Debian LiveISO
+Используя ISO образ [Arch Linux](https://archlinux.org/download/)
 
 ```sh
 # Монтируем

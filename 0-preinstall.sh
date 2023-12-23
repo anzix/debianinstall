@@ -115,7 +115,7 @@ mount -v --mkdir $DISK_EFI /mnt/boot/efi
 pacman -Sy --noconfirm debootstrap debian-archive-keyring
 
 # Установка базовой системы с некоторыми пакетами
-debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/
+debootstrap --arch amd64 --include locales,console-setup,console-setup-linux,eatmydata $SUITE /mnt http://ftp.ru.debian.org/debian/
 
 # Выполняю bind монтирование для подготовки к chroot
 for i in dev proc sys; do
