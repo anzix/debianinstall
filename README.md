@@ -219,7 +219,7 @@ systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.XIM-unix":
 systemd-tmpfiles[573]: Failed to create directory or subvolume "/tmp/.font-unix": Read-only file system
 ```
 
-Все systemd сервисы тупо не запускались, однако на Sid (unstable) они все запускаются
+Также без этой опции все systemd сервисы тупо не запускались, однако на Sid (unstable) они все запускаются
 
 ```txt
 dbus-broker.service: Failed to set up mount namespacing: /run/systemd/unit-root/dev: Read-only file system
