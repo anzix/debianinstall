@@ -29,13 +29,10 @@ deb [arch=amd64,i386] http://mirror.truenetwork.ru/debian/ $SUITE main contrib n
 deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
 EOF
 
-# Без этого не будет выполнятся инструменты например dpkg-reconfigure из /usr/bin (sbin)
-sudo -s
-
 # Запускается генератор локалей
 # Выбрал en_US.UTF-8 UTF-8 и ru_RU.UTF-8 UTF-8
 # Потом по умолчанию для окружения системы выставил ru_RU.UTF-8
-dpkg-reconfigure locales
+/usr/sbin/dpkg-reconfigure locales
 
 # Приятная сортировка и сравнения строк
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
@@ -44,18 +41,18 @@ echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 source /etc/default/locale
 
 # Запускается настройка часового пояса
-dpkg-reconfigure tzdata
+/usr/sbin/dpkg-reconfigure tzdata
 
 # Запускается настройщик tty и консоли
 # UTF-8 - Cyrillic - Slavic languages (also Bosnian and Serbian Latin)
 # Для себя я используя TerminusBold с размеров 11x22
-dpkg-reconfigure console-setup
+/usr/sbin/dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
 # Модель Обычная 105, Другая, страна первой раскладки Русская,
 # раскладка Русская, способ переключения Alt+Shift, нет временного переключателя
 # обычная раскладка клавиатуры, нет ключа compose
-dpkg-reconfigure keyboard-configuration
+/usr/sbin/dpkg-reconfigure keyboard-configuration
 
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой

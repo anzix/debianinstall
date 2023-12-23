@@ -145,11 +145,11 @@ cat /mnt/etc/fstab
 cp -r /root/debianinstall /mnt
 
 # Chroot'имся
-arch-chroot /mnt /bin/bash /debianinstall/1-chroot.sh
+chroot /mnt /bin/bash /debianinstall/1-chroot.sh
 
 # Действия после chroot
 if read -re -p "chroot /mnt? [y/N]: " ans && [[ $ans == 'y' || $ans == 'Y' ]]; then
-	arch-chroot /mnt ; echo "Не забудьте самостоятельно размонтировать /mnt перед reboot!"
+	chroot /mnt ; echo "Не забудьте самостоятельно размонтировать /mnt перед reboot!"
 else
 	umount -R /mnt
 fi
