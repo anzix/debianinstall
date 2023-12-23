@@ -94,8 +94,11 @@ for i in dev proc sys; do
   mount -v --rbind "/$i" "/mnt/$i"; mount -v --make-rslave "/mnt/$i"
 done
 
+# Без экспорта этой переменной я не мог чрутнутся
+export PATH="$PATH:/usr/sbin:/sbin:/bin"
+
 # Чрутимся
-arch-chroot /mnt
+chroot /mnt
 ```
 
 ## Установка шрифтов семейства Nerd в Debian

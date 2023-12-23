@@ -117,6 +117,11 @@ pacman -Sy --noconfirm debootstrap debian-archive-keyring
 # Установка базовой системы с некоторыми пакетами
 debootstrap --arch amd64 --include locales,console-setup,console-setup-linux $SUITE /mnt http://ftp.ru.debian.org/debian/
 
+# Выполняю bind монтирование для подготовки к chroot
+for i in dev proc sys; do
+  mount -v --rbind "/$i" "/mnt/$i"; mount -v --make-rslave "/mnt/$i"
+done
+
 # Генерирую fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
