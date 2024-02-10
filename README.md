@@ -122,6 +122,17 @@ sudo apt install wine wine64 libwine libwine:i386 fonts-wine
 sudo apt install steam-installer
 ```
 
+### Ускорение скачивания игр Steam (из пакетного менеджера)
+
+Прирост скачивания очень заметен, в 3 раза быстрее
+
+```sh
+tee $HOME/.steam/steam/steam_dev.cfg > /dev/null << EOF
+@nClientDownloadEnableHTTP2PlatformLinux 0
+@fDownloadRateImprovementToAddAnotherConnection 1.0
+EOF
+```
+
 ## TODO: Пакеты для ноутбуков (на заметку)
 
 ```sh
@@ -200,11 +211,32 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 
 # Изменения вступят в силу после выхода из системы или перезагрузки системы.
 
-# Поддержка Flatpak в KDE Plasma
+# [Для окружения KDE Plasma] Поддержка Flatpak в магазин приложений Discover
 sudo apt install plasma-discover-backend-flatpak
 
-# Поддержка Flatpak в Gnome Software
+# [Для окружения GNOME] Поддержка Flatpak в магазин приложений Gnome Software
 sudo apt install gnome-software-plugin-flatpak
+```
+
+## TODO: Qemu KVM в Debian 12
+
+```sh
+# Минимальный набор
+sudo apt install -y \
+ qemu-kvm `# Основной пакет KVM` \
+ libvirt-daemon-system `# Автозапуск модулей KVM` \
+ libvirt-clients `# Бинарные файлы клиента такие как virsh` \
+ lirtinst `# Группа cli инструментов такие как virt-install, virt-clone, virt-xml и т.д` \
+ virt-manager `# GUI менеджер виртуальных машин`
+
+# Проверить доступные элементы
+# Обращайте внимание только на раздел Qemu
+virt-host-validate
+
+# Автозапуск вирт. сети default при запуске системы
+sudo virsh net-autostart default
+# Включить default вирт. сеть
+sudo virsh net-start default
 ```
 
 ## Итог по Debian 12 Bookworm с BTRFS + Snapper + Snapper-Rollback
