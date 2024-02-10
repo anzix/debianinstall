@@ -50,6 +50,7 @@ dpkg-reconfigure tzdata
 # Запускается настройщик tty и консоли
 # UTF-8 - Cyrillic - Slavic languages (also Bosnian and Serbian Latin)
 # Для себя я используя TerminusBold с размеров 11x22
+# TODO: Более приятный шрифт но только мелкий ruscii_8x16
 dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
@@ -199,7 +200,7 @@ if [ "${FS}" = 'btrfs' ]; then
   cp -v hooks/80snap-apt /etc/apt/apt.conf.d/
   cp -v logrotate/snap-apt /etc/logrotate.d/
   rm -fv /etc/apt/apt.conf.d/80snapper
-  sed -i 's/DISABLE_APT_SNAPSHOT=\"no\"/DISABLE_APT_SNAPSHOT=\"yes\"/g' /etc/default/snapper
+  sed -i 's/DISABLE_APT_SNAPSHOT="no"/DISABLE_APT_SNAPSHOT="yes"/g' /etc/default/snapper
   popd
 fi
 
