@@ -89,7 +89,7 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
 ```sh
 # Монтируем
 mount -v -o subvol=@ /dev/vda2 /mnt
-mount -v /dev/vda1 /mnt/boot
+mount -v /dev/vda1 /mnt/boot/efi
 for i in dev proc sys; do
   mount -v --rbind "/$i" "/mnt/$i"; mount -v --make-rslave "/mnt/$i"
 done
@@ -141,6 +141,16 @@ task-laptop # Мета-пакет необходимых программ для
 powertop # Мониторинг энергопотребления и управлением питанием
 ```
 
+## TODO: Апгрейд на новую маджорную версию Debian (возможно с 12 Bookworm на 13 Trixie)
+
+Просто выполняем
+
+```sh
+sudo apt dist-upgrade
+# Или
+sudo apt full-upgrade # при вопросе не нажимайте автоматически yes, оно может удалить пакеты которые вы хотите оставить
+```
+
 ## Проприетарные драйвера Nvidia (не проверено)
 
 1. Убедитесь чтобы в ``/etc/apt/sources.list`` был non-free-firmware репозиторий
@@ -175,6 +185,32 @@ sudo update-grub
 ```
 
 Это позволит модулям nvidia загружатся сразу при загрузке
+
+## (Не рекомендуется) Последние проприетарные драйвера на Debian Testing (Не проверено)
+
+- [Источник Nvidia Docs](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian)
+- [Инструкция от A1RM4X](https://www.youtube.com/live/6E59GOY9QrM?si=6PmPaYcQ0XrVnLak&t=8392)
+
+> Последние проприетарные драйвера на Debian Testing\
+> Не предназначены для Linux Desktop! Это только для AI CUDA\
+> Ещё у вас не будет DLSS и Raytracing\
+> Для запуска игр необходимо "убрать "переменную PROTON_ENABLE_NVAPI=1
+
+Подготовка
+
+- Архитектура i386 должно присутствовать
+- Пакет `firmware-mics-nonfree` должен присутствовать
+
+Установка последних драйверов
+
+```sh
+sudo apt-get install linux-headers-$(uname -r)
+sudo add-apt-repository contrib
+wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-archive-keyring.gpg
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt install nvidia-driver
+```
 
 ## LightDM не сохраняет выбранного пользователя
 
@@ -226,12 +262,15 @@ sudo apt install -y \
  qemu-kvm `# Основной пакет KVM` \
  libvirt-daemon-system `# Автозапуск модулей KVM` \
  libvirt-clients `# Бинарные файлы клиента такие как virsh` \
- lirtinst `# Группа cli инструментов такие как virt-install, virt-clone, virt-xml и т.д` \
- virt-manager `# GUI менеджер виртуальных машин`
+ virtinst `# Группа cli инструментов такие как virt-install, virt-clone, virt-xml и т.д` \
+ virt-manager `# GUI менеджер виртуальных машин` \
+ libguestfs-tools `# Монтировать гостевой образ виртуалки qemu в хост используя guestmount`
 
 # Проверить доступные элементы
 # Обращайте внимание только на раздел Qemu
 virt-host-validate
+
+# TODO: Добавить инструкцию по изолированной сети используя bridge (мост)
 
 # Автозапуск вирт. сети default при запуске системы
 sudo virsh net-autostart default
