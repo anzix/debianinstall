@@ -34,7 +34,7 @@
  'dbus-broker' # Оптимизированная система шины сообщений
  'ccache' # Ускоряет перекомпиляцию за счет кэширования предыдущих компиляций
  'manpages' 'man-db' # Мануалы
- 'unzip' 'unrar' 'p7zip-full' # Архивирование и распаковка файлов zip/rar/7z
+ 'unzip' 'unrar' 'p7zip-full' 'zip' # Архивирование и распаковка файлов zip/rar/7z
 
  'console-setup' # Настройка TTY консоли и раскладки
 
@@ -53,9 +53,15 @@
 
  # AMD
 
+ 'libglx-mesa0' 'libglx-mesa0:i386' # ?
+ 'libgl1-mesa-dri' 'libgl1-mesa-dri:i386' # ?
+
  'libgl1-mesa-dri' 'libgl1-mesa-dri:i386' # Версия OpenGL с открытым исходным кодом
  'mesa-vdpau-drivers' # 'mesa-vdpau-drivers:i386' # VDPAU Драйвер
  'mesa-va-drivers' # 'mesa-va-drivers:i386' # VA-API драйвер
+
+ 'libvulkan-dev' 'libvulkan-dev:i386' # ?
+ 'mesa-common-dev' # ?
 
  'mesa-vulkan-drivers' 'mesa-vulkan-drivers:i386' # Реализация Vulkan драйвера от Mesa
  'vulkan-validationlayers' # 'vulkan-validationlayers:i386' # Слои Vulkan

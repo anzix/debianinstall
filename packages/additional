@@ -44,6 +44,7 @@
  'hunspell-ru' # Русский словарь для проверки орфографии (работает только с UTF8 кодировкой)
  'atool' # Для предпросмотра архивов
  'faketime' # CLI утилита чтобы подделывать время для программ или пиратских игр (man faketime)
+ 'libimage-exiftool-perl' # Утилита для удаления метаданных изображений (man exiftool)
  'flashrom' # Для прошивания чипов программатором ch341a
  'dfu-util' # Для обновления прошивки паяльника Pinecil первой версии
  'tmux' # Мультиплексор для одноконных терминалов (напр. alacritty)
@@ -65,6 +66,9 @@
 
 # --- DEV
 
+ 'gdb-minimal' # Отладчик
+ 'clang' 'clang-tools' # clang с clang-tidy, clang-query и clang-format
+ 'ltrace' # Отображение вызовов динамической библиотеки процесса.
 # 'npm' # Для neovim (много пакетов)
 # 'yarn' # Для neovim плагина https://github.com/iamcco/markdown-preview.nvim
 # 'tidy' # Инструмент для приведения HTML-кода к чистому стилю
