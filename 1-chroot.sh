@@ -99,7 +99,8 @@ echo "root:${USER_PASSWORD}" | chpasswd
 # Добавления юзера с созданием $HOME и присваивание групп к юзеру, оболочка zsh
 # Так как не существует wheel группа нужно просто присвоить sudo группу пользователю
 # bluetooth почему-то тоже не существует
-useradd -m -G sudo,adm,dialout,dip,plugdev,netdev,audio,video,input,cdrom,users,uucp,games -s /bin/zsh "${USER_NAME}"
+# Группа render необходима для davinci resolve
+useradd -m -G sudo,adm,dialout,dip,plugdev,netdev,audio,video,input,cdrom,users,uucp,games,render -s /bin/zsh "${USER_NAME}"
 
 # Пароль пользователя
 echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd
