@@ -42,6 +42,8 @@ dpkg-reconfigure locales
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 
 # Принудительно использовать выставленный язык
+# TODO: добавить вместо source команду update-locale
+# update-locale
 source /etc/default/locale
 
 # Запускается настройка часового пояса
@@ -98,6 +100,11 @@ echo "root:${USER_PASSWORD}" | chpasswd
 
 # Добавления юзера с созданием $HOME и присваивание групп к юзеру, оболочка zsh
 # Так как не существует wheel группа нужно просто присвоить sudo группу пользователю
+# sudo - разрешение на команду sudo без ограничений
+# adm - разрешение на прочтение логов из папки /var/log
+# plugdev — разрешение на монтирование внешних накопителей
+# audio - только для pulse. Все остальные пользователи работают с pulse и pulse-access
+# cdrom — позволяется использовать привод
 # bluetooth почему-то тоже не существует
 # Группа render необходима для davinci resolve
 useradd -m -G sudo,adm,dialout,dip,plugdev,netdev,audio,video,input,cdrom,users,uucp,games,render -s /bin/zsh "${USER_NAME}"
