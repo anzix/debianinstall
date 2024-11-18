@@ -69,6 +69,11 @@
  'gdb-minimal' # Отладчик
  'clang' 'clang-tools' # clang с clang-tidy, clang-query и clang-format
  'ltrace' # Отображение вызовов динамической библиотеки процесса.
+ 'cloc' # CLI утилита позволяющая считать кол-во строк кода/комментарий
+ 'doxygen' # Документация/аннотации для C/C++, Java, IDL и PHP
+ 'graphviz' # ПО для визуализированных графиков (содержит CLI утилиту dot и другие)
+ # 'google-perftools' # Анализ производительности C++ ПО и для выявления утечек пямяти
+ # 'libgtest-dev' # Google Test - C++ testing utility
 # 'npm' # Для neovim (много пакетов)
 # 'yarn' # Для neovim плагина https://github.com/iamcco/markdown-preview.nvim
 # 'tidy' # Инструмент для приведения HTML-кода к чистому стилю
