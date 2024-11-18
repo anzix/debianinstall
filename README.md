@@ -300,6 +300,24 @@ dbus-broker.service: Failed to set up mount namespacing: /run/systemd/unit-root/
 dbus-broker.service: Failed at step NAMESPACE spawning /usr/bin/dbus-broker-launch: Read-only file system
 ```
 
+## Проблемы и способы их решения
+
+1. При первом запуске, systemd сервис `console-setup` фейлится с такой ошибкой
+
+   ```txt
+   systemd[1]: Starting console-setup.service - Set console font and keymap...
+   console-setup.sh[518]: /usr/bin/setupcon: 999: cannot open /tmp/tmpkbd.cOVVxC: No such file
+   console-setup.service: Main process exited, code=exited, status=1/FAILURE
+   systemd[1]: console-setup.service: Failed with result 'exit-code'.
+   systemd[1]: Failed to start console-setup.service - Set console font and keymap.
+   ```
+
+   Решение это просто перезагрузить данный сервис
+
+   ```sh
+   sudo systemctl restart console-setup
+   ```
+
 Поддержите меня за мои старания (´｡• ᵕ •｡`)
 
 > [DonationAlerts](https://www.donationalerts.com/r/givefly)
