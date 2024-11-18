@@ -53,7 +53,6 @@ dpkg-reconfigure tzdata
 dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
-# TODO: Попробовать выбрать English (US) - Russian (US, phonetic)
 # Модель Generic 105, Другая, страна первой раскладки Russia,
 # раскладка Russia, способ переключения Alt+Shift, нет временного переключателя,
 # раскладка клавиатуры по умолчанию, нет ключа compose
