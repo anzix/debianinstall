@@ -33,7 +33,7 @@ deb [arch=amd64,i386] http://mirror.truenetwork.ru/debian/ $SUITE main contrib n
 deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
 EOF
 
-# Запускается генератор локалей
+# Запускается генератор локалей и выставление текущего языка системы
 # Выбрал en_US.UTF-8 UTF-8 и ru_RU.UTF-8 UTF-8
 # Потом по умолчанию для окружения системы выставил ru_RU.UTF-8
 dpkg-reconfigure locales
@@ -42,29 +42,27 @@ dpkg-reconfigure locales
 echo "LC_COLLATE=C" | tee -a /etc/default/locale > /dev/null
 
 # Принудительно использовать выставленный язык
-# TODO: добавить вместо source команду update-locale
-# update-locale
-source /etc/default/locale
+update-locale
 
 # Запускается настройка часового пояса
 dpkg-reconfigure tzdata
 
-# Запускается настройщик tty и консоли
-# UTF-8 - Cyrillic - Slavic languages (also Bosnian and Serbian Latin)
-# Для себя я используя TerminusBold с размеров 11x22
-# TODO: Более приятный шрифт но только мелкий ruscii_8x16
+# Запускается настройщик tty и консоли, вот обычная настройка
+# "UTF-8" далее "Cyrillic - Slavic languages (also Bosnian and Serbian Latin)"
+# Для консольного шрифта выбираем TerminusBold с размером 11x22
 dpkg-reconfigure console-setup
 
 # Запускается настройщик раскладки
-# Модель Обычная 105, Другая, страна первой раскладки Русская,
-# раскладка Русская, способ переключения Alt+Shift, нет временного переключателя
-# обычная раскладка клавиатуры, нет ключа compose
+# TODO: Попробовать выбрать English (US) - Russian (US, phonetic)
+# Модель Generic 105, Другая, страна первой раскладки Russia,
+# раскладка Russia, способ переключения Alt+Shift, нет временного переключателя,
+# раскладка клавиатуры по умолчанию, нет ключа compose
 dpkg-reconfigure keyboard-configuration
 
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой
 apt update
-eatmydata apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs
+eatmydata apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs btrfs-progs
 
 # Добавление глобальных переменных системы
 tee -a /etc/environment > /dev/null << EOF
@@ -73,7 +71,7 @@ tee -a /etc/environment > /dev/null << EOF
 AMD_VULKAN_ICD=RADV
 EOF
 
-# Не знаю будет ли работать?
+# TODO: Не знаю будет ли работать?
 # Для работы граф. планшета Xp-Pen G640 с OpenTabletDriver
 echo "blacklist hid_uclogic" > /etc/modprobe.d/blacklist.conf
 
@@ -125,8 +123,8 @@ LC_ALL=C sudo -u "${USER_NAME}" xdg-user-dirs-update --force
 # Настройка snapper и btrfs в случае обнаружения
 if [ "${FS}" = 'btrfs' ]; then
 
-  # BTRFS пакеты:
-  apt install -yy btrfs-progs btrfsmaintenance
+  # Пакет для обслуживания btrfs:
+  apt install -yy btrfsmaintenance
 
   # Snapper пакеты
   apt install -yy inotify-tools gawk python3-btrfsutil snapper
@@ -212,9 +210,6 @@ if [ "${FS}" = 'btrfs' ]; then
   popd
 fi
 
-# Set plymouth theme
-# plymouth-set-default-theme -R moonlight
-
 # Размер Zram
 tee -a /etc/systemd/zram-generator.conf >> /dev/null << EOF
 zram-size = min(min(ram, 4096) + max(ram - 4096, 0) / 2, 32 * 1024)
@@ -235,5 +230,6 @@ chown -R 1000:users /debianinstall
 
 # Установка и настройка Grub
 #sed -i -e 's/#GRUB_DISABLE_OS_PROBER/GRUB_DISABLE_OS_PROBER/' /etc/default/grub # Обнаруживать другие ОС и добавлять их в grub (нужен пакет os-prober)
+# TODO: Для стандартизации (если точка монтирования /mnt/boot) выставить --efi-directory=/boot
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 update-grub
