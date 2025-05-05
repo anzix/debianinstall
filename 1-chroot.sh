@@ -27,10 +27,10 @@ EOF
 # TODO: Может добавить backports? Linux ядро и другие пакеты будут по свежее,
 # однако свежие драйвера графики Nvidia и AMD (mesa) пока не предвидятся в будущем
 tee /etc/apt/sources.list > /dev/null << EOF
-deb [arch=amd64,i386] http://ftp.ru.debian.org/debian/ $SUITE main contrib non-free non-free-firmware
-deb [arch=amd64,i386] http://mirror.docker.ru/debian/ $SUITE main contrib non-free non-free-firmware
-deb [arch=amd64,i386] http://mirror.truenetwork.ru/debian/ $SUITE main contrib non-free non-free-firmware
-deb [arch=amd64,i386] http://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
+deb [arch=amd64,i386] https://ftp.ru.debian.org/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] https://mirror.docker.ru/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] https://mirror.truenetwork.ru/debian/ $SUITE main contrib non-free non-free-firmware
+deb [arch=amd64,i386] https://security.debian.org/debian-security $SUITE-security main contrib non-free non-free-firmware
 EOF
 
 # Запускается генератор локалей и выставление текущего языка системы
@@ -61,7 +61,7 @@ dpkg-reconfigure keyboard-configuration
 # Установка необходимых пакетов
 # FIXME: Установка должна происходить из входного файла с обработкой
 apt update
-eatmydata apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs btrfs-progs
+eatmydata apt install -yy linux-image-amd64 linux-headers-amd64 firmware-misc-nonfree firmware-linux-nonfree sudo vim systemd-zram-generator zstd git zsh htop neofetch wget dbus-broker efibootmgr efivar command-not-found manpages man-db grub-efi-amd64 plocate fonts-terminus network-manager ssh build-essential ca-certificates xdg-user-dirs btrfs-progs apt-transport-https
 
 # Добавление глобальных переменных системы
 tee -a /etc/environment > /dev/null << EOF
@@ -211,6 +211,7 @@ fi
 
 # Размер Zram
 tee -a /etc/systemd/zram-generator.conf >> /dev/null << EOF
+[zram0]
 zram-size = min(min(ram, 4096) + max(ram - 4096, 0) / 2, 32 * 1024)
 compression-algorithm = zstd
 EOF

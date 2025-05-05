@@ -85,7 +85,7 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
    - Присваиваем пользователю группу vboxfs командой `usermod -a -G vboxsf $(whoami)`
    <!-- - Активируем systemd сервис `sudo systemctl enable vboxservice.service` -->
 
-## Восстановление Debian, chroot из под LiveISO
+## Восстановление Debian, chroot из под LiveISO если выбрали Btrfs
 
 Используя ISO образ [Arch Linux](https://archlinux.org/download/)
 
