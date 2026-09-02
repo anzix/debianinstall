@@ -46,9 +46,10 @@ pacman -Sy git
 git clone https://github.com/anzix/debianinstall && cd debianinstall
 ```
 
-> Перед тем как начать установку пробегитесь по выбору пакетов которые я указал в ``packages/base`` открыв любым текстовым редактором vim или nano\
-> Выберете (закомментировав/раскомментировав) используя # (хэш) те пакеты которые вы нуждаетесь\
-> Предоставляется выбор для драйверов между AMD и Nvidia
+> Перед тем как начать установку пробегитесь по выбору пакетов которые я указал
+> в ``packages/base`` открыв любым текстовым редактором vim или nano.
+> Выберете (закомментировав/раскомментировав) используя `#` (хэш) те пакеты
+> которые вы нуждаетесь. Предоставляется выбор для драйверов между AMD и Nvidia
 
 Начинаем установку
 
@@ -56,8 +57,8 @@ git clone https://github.com/anzix/debianinstall && cd debianinstall
 ./0-preinstall.sh
 ```
 
-Как только установка завершится вам нужно перезагрузится командой `sudo reboot` и вытащить носитель\
-И вас будет встречать чистый Debian 12
+Как только установка завершится вам нужно перезагрузится командой `sudo reboot`
+и вытащить носитель. И вас будет встречать чистый Debian 12
 
 ## Установка софта из моих файлов
 
@@ -75,9 +76,11 @@ sudo apt install $(sed -e '/^#/d' -e 's/#.*//' -e "s/'//g" -e '/^\s*$/d' -e 's/ 
 
 ## Для тестирования на виртуалке
 
-1. Для QEMU/KVM качаем пакеты `qemu-guest-agent spice-vdagent xserver-xorg-video-qxl xserver-xspice`
+1. Для QEMU/KVM качаем пакеты `qemu-guest-agent spice-vdagent xserver-xorg-video-qxl
+   xserver-xspice`
 
-> В оконных менеджерах (WM) для активации Shared Clipboard в терминале надо ввести `spice-vdagent`
+> В оконных менеджерах (WM) для активации Shared Clipboard в терминале надо ввести
+> `spice-vdagent`
 
 2. Для VirtualBox (не проверенно):
 
@@ -106,7 +109,7 @@ chroot /mnt
 
 ## Установка шрифтов семейства Nerd в Debian
 
-Так как нету данных шрифтов в репозиториях придётся устанавливать их вручную\
+Так как нету данных шрифтов в репозиториях придётся устанавливать их вручную.
 Выполняем данный скрипт и выбираем шрифт на выбор и готово.
 
 ```sh
@@ -115,7 +118,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/officialrajdeepsingh/ner
 
 ## TODO: Установка Wine и Steam
 
-Так как я уже добавил в ``/etc/apt/sources.list`` поддержку архитектуры i386 все необходимые библиотеки wine будут включены
+Так как я уже добавил в ``/etc/apt/sources.list`` поддержку архитектуры i386
+все необходимые библиотеки wine будут включены
 
 ```sh
 # Установка всех пакетов wine
@@ -145,6 +149,9 @@ powertop # Мониторинг энергопотребления и управ
 ```
 
 ## TODO: Апгрейд на новую маджорную версию Debian (возможно с 12 Bookworm на 13 Trixie)
+
+> Если у вас в `/etc/apt/sources.list` объявлен тег `stable` то при обновлении
+> `upgrade` вас автоматически переведут на новую маджорную версию
 
 Просто выполняем
 
@@ -189,15 +196,10 @@ sudo update-grub
 
 Это позволит модулям nvidia загружатся сразу при загрузке
 
-## (Не рекомендуется) Последние проприетарные драйвера на Debian Testing (Не проверено)
+## Последние проприетарные драйвера на Debian (Не проверено)
 
 - [Источник Nvidia Docs](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#debian)
 - [Инструкция от A1RM4X](https://www.youtube.com/live/6E59GOY9QrM?si=6PmPaYcQ0XrVnLak&t=8392)
-
-> Последние проприетарные драйвера на Debian Testing\
-> Не предназначены для Linux Desktop! Это только для AI CUDA\
-> Ещё у вас не будет DLSS и Raytracing\
-> Для запуска игр необходимо "убрать "переменную PROTON_ENABLE_NVAPI=1
 
 Подготовка
 
@@ -207,13 +209,19 @@ sudo update-grub
 Установка последних драйверов
 
 ```sh
-sudo apt-get install linux-headers-$(uname -r)
-sudo add-apt-repository contrib
-wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-archive-keyring.gpg
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
-sudo apt install nvidia-driver
+# Устанавливаем linux-headers и extrepo
+sudo apt -U install extrepo
+
+# Раскомментируем строки для установки проприетарного ПО
+sudo sed -i 's/^# -\s*\(main\|contrib\|non-free\)/- \1/' /etc/extrepo/config.yaml
+
+# Добавляем репозиторий и устанавливаем последние драйвера Nvidia
+sudo extrepo enable nvidia-cuda
+sudo apt -U install nvidia-driver-cuda
 ```
+
+Если обновилось linux ядро или установили другое необходимо собрать модули nvidia
+командой `sudo dpkg-reconfigure nvidia-kernel-dkms`
 
 ## LightDM не сохраняет выбранного пользователя
 

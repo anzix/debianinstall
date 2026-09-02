@@ -26,6 +26,8 @@ EOF
 # Ручное добавление зеркал
 # TODO: Может добавить backports? Linux ядро и другие пакеты будут по свежее,
 # однако свежие драйвера графики Nvidia и AMD (mesa) пока не предвидятся в будущем
+# TODO: Для Debian 13 Trixie переобразовать в новый формат (как при выполнении
+# команды `sudo apt modernize-sources`)?
 tee /etc/apt/sources.list > /dev/null << EOF
 deb [arch=amd64,i386] https://ftp.ru.debian.org/debian/ $SUITE main contrib non-free non-free-firmware
 deb [arch=amd64,i386] https://mirror.docker.ru/debian/ $SUITE main contrib non-free non-free-firmware
@@ -99,9 +101,12 @@ echo "root:${USER_PASSWORD}" | chpasswd
 # Так как не существует wheel группа нужно просто присвоить sudo группу пользователю
 # sudo - разрешение на команду sudo без ограничений
 # adm - разрешение на прочтение логов из папки /var/log
-# plugdev — разрешение на монтирование внешних накопителей
+# dialout - разрешение на доступ к серийным портам
+# dip - разрешение на настройку dial-up соединения (командам ppp, dip, wvdial и т.д)
+# plugdev - разрешение на монтирование внешних накопителей
+# netdev - разрешение на управление сетевыми интерфейсами через Network Manager и wicd
 # audio - только для pulse. Все остальные пользователи работают с pulse и pulse-access
-# cdrom — позволяется использовать привод
+# cdrom - позволяется использовать привод
 # bluetooth почему-то тоже не существует
 # Группа render необходима для davinci resolve
 useradd -m -G sudo,adm,dialout,dip,plugdev,netdev,audio,video,input,cdrom,users,uucp,games,render -s /bin/zsh "${USER_NAME}"

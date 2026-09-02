@@ -24,7 +24,7 @@
  'neofetch' # Чтобы выпендриватся
  'exfat-fuse' # Поддержка файловой системы exFAT (Для sd-карт)
  'ntfs-3g' # Поддержка файловой системы NTFS
- 'dosfstools' # Поддержка файловой системы vFAT
+ 'dosfstools' # Поддержка файловой системы vFAT (mkfs.fat)
  'f2fs-tools' # Поддержка файловой системы f2fs
  'btrfs-progs' # Поддержка файловой системы btrfs
  'mtools' # Утилиты для доступа к MS-DOS дискам
@@ -47,7 +47,7 @@
  'xserver-xorg' # XOrg сервер
  'xinit' # XOrg инициализация
  'x11-utils' # Утилиты X
- 'x11-xserver-utils' # Утилиты X
+ 'x11-xserver-utils' # Утилиты X (xset и т.д)
  'x11-apps' # Полный набор программ
  'xserver-xorg-video-amdgpu' # Открытые драйвера AMDGPU
  'xclip' # Поддержка буфер обмена
